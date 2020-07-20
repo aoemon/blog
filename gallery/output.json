@@ -2,7 +2,9 @@
 	"url": "https://img-1256518872.file.myqcloud.com/blog/my-gallery/",
 	"tip": "没有更多了～",
 	"rowHeight": 150,
+	"mobileRowHeight": 120,
 	"margins": 3,
+	"mobileMargins": 2,
 	"img": [
 		"4032.3024 11_漓江.jpg",
 		"4032.3024 12_漓江.jpg",
