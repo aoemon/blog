@@ -1,44 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>为什么 Java 中的 hashCode() 使用 31 作为乘数？</title>
-    <url>/posts/b79e7559/</url>
-    <content><![CDATA[以 HashMap 为例，为了保证添加的元素是不可重复的，其 key 所在的类需要同时重写 hashCode() 和 equals() ，以实现元素相等规则。
-在 Eclipse / IDEA 中，自定义类可以调用工具自动重写 hashCode() 和 equals() 。同时在重写 hashCode() 时，通常会选用 31 作为乘数参与哈希值的计算：
-@Overridepublic int hashCode() &#123;    int result = name != null ? name.hashCode() : 0;    result = 31 * result + age;    return result;&#125;
-
-String 中的 hashCode() 在计算每个字符时也会乘以 31，源码如下：
-public int hashCode() &#123;    int h = hash;    if (h == 0 &amp;&amp; value.length &gt; 0) &#123;        char val[] = value;        for (int i = 0; i &lt; value.length; i++) &#123;            h = 31 * h + val[i];        &#125;        hash = h;    &#125;    return h;&#125;
-
-由 for 循环可以推导出一个计算公式，在 hashCode() 注释中已经给出：
-s[0]*31^(n-1) + s[1]*31^(n-2) + ... + s[n-1]
-
-推导过程如下：
-假设：n&#x3D;3i&#x3D;0 -&gt; h &#x3D; 31 * 0 + val[0]i&#x3D;1 -&gt; h &#x3D; 31 * (31 * 0 + val[0]) + val[1]i&#x3D;2 -&gt; h &#x3D; 31 * (31 * (31 * 0 + val[0]) + val[1]) + val[2]       h &#x3D; 31 * (31*31*0 + 31*val[0] + val[1]) + val[2]       h &#x3D; 31*31*31*0 + 31*31*val[0] + 31*val[1] + val[2]       h &#x3D; 31^(n-1)*val[0] + 31^(n-2)*val[1] + val[2]
-
-
-
-问题是，为什么需要一个乘数，而且为 31？
-首先，选择一个乘数对哈希值进行膨胀是有必要的。理论上讲，如果数组长度很长，则哈希值越大，后续参与取模运算（位与运算）的二进制位就越多，则计算出的桶索引区间就越大，碰撞概率就越小；加之扰动函数 hash() 对哈希值的进一步优化，加入了高位计算，再次降低了碰撞的概率，从而提升 HashMap 的效率。
-其次，选择 31 作为乘数主要有以下原因：
-
-31 是一个奇质数。
-可以将乘法运算转换为开销更小的位移和减法运算：31 * i == (i &lt;&lt; 5) - i ，提高计算效率。多数虚拟机都会自动执行这种优化。
-
-乘数要保证是奇数，这很重要。哈希值的目的是获得随机位（特别是低位，因为这些位通常使用更多），如果乘数是偶数，与 2 相乘等价于向左位移运算，最低位只能是 0，并且在乘法溢出时，总是会丢失最高有效位，这使得哈希值缺乏多样性，得到的值较少。但如果乘以奇数，最低位可以是 0 或 1，并且在乘法溢出时仍可保持多样性。
-使用质数的好处并不是很明显，但习惯上都使用质数来计算。如果用一个数字乘以质数，那么计算结果只能被数字本身和质数还有 1 来整除，从而减少冲突。
-为了提高计算效率，2n 前后的奇质数可以很容易的将乘法运算转换为开销更小的位移和加减法运算，如：3、5、7、17、31、127 等。
-以奇质数 3 为例，假设 n = 5，然后把 3 和 n 带入上面的计算公式，并仅计算公式中次数最高的那一项，结果是 34 = 81，数值较小。所以这里可以断定，当字符串长度不是很长时，用 3 做为乘数计算出的哈希值，数值不会很大。也就是说，哈希值会分布在一个较小的数值区间内，分布性不佳，最终可能会导致冲突率上升。
-同时选择的乘数也不能太大，这会使计算出的哈希值很大。如果用 int 类型表示哈希值，结果很容易溢出，最终导致数值信息丢失（尽管数值信息丢失并不一定会导致冲突率上升）。
-经过验证，31 作为乘数产生的冲突较少，分布相对较均匀，并可以很容易的转换为位移和减法运算：i * 31 == i * (2^5 - 1) == (i &lt;&lt; 5) - i 。
-参考Why does Java’s hashCode() in String use 31 as a multiplier?On integer multiplication, overflow, and information loss科普：为什么 String hashCode 方法选择数字 31 作为乘子java String hashCode() 设计的道理？
-
+    <title>test</title>
+    <url>/posts/d87f7e0c/</url>
+    <content><![CDATA[
 ]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>哈希表</tag>
-      </tags>
   </entry>
 </search>
